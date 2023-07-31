@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos/styles.css">
-    <title>Registro de Conductores y Vehículos</title>
+    <title>Conductores-Vehículos</title>
 </head>
 <body>
     <h1>Registro de Conductores y Vehículos</h1>
@@ -68,8 +68,8 @@
         <fieldset>
             <legend>FECHA DE SOLICITUD</legend>
             <div>
-                <label for="fecha_solicitud">Fecha de Registro:</label>
-                <input type="date" id="fecha_solicitud" name="fecha_solicitud" required>
+                <label for="fecha_registro">Fecha de Registro:</label>
+                <input type="date" id="fecha_registro" name="fecha_registro" required>
             </div>
         </fieldset>
 
