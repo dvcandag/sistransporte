@@ -34,34 +34,61 @@
         echo "<th>Tipo Vehículo</th>";
         echo "<th>Marca/Modelo</th>";
         echo "<th>Editar</th>"; //Nueva columna para actualizar registro
-        echo "<th>Obtener Certificado</th>"; //Nueva columna redirecionar a certificado
+        echo "<th>Obtener Certificado</th>"; //Nueva columna redireccionar a certificado
         echo "</tr>";
 
         foreach ($registros as $registro) {
             echo "<tr>";
             echo "<td>{$registro['dni']}</td>";
             
-            //Aquí se realiza la concatenación en orden (apellido_paterno apellido_materno,nombre) 
+            //se realiza la concatenación en orden (apellido_paterno apellido_materno,nombre) 
             echo "<td>{$registro['apellido_paterno']} {$registro['apellido_materno']}, {$registro['nombre']}</td>";
             echo "<td>{$registro['celular']}</td>";
             echo "<td>{$registro['nro_placa']}</td>";
             echo "<td>{$registro['tipo_vehiculo']}</td>";
 
-            //Aquí se realiza la concatenación (marca / modelo)
+            //se realiza la concatenación (marca / modelo)
             echo "<td>{$registro['marca']} / {$registro['modelo']}</td>";
-
 
             //Nuevas celdas con enlaces a las páginas (editar.php y certificado.php)
             echo "<td><a href=\"editar.php?id={$registro['id_conductor']}\">Editar</a></td>";
-            echo "<td><a href=\"certificado.php?id={$registro['id_conductor']}\" target=\"_blank\">Certificar</a></td>";
-            echo "</tr>";
-        }
+
+//echo "<td><a id=\"btnCertificar\" href=\"#\">Certificar</a></td>";
+
+
+//echo "<td><a id=\"btnCertificar\" href=\"certificado.php?id={$registro['id_conductor']}\" target=\"_blank\">Certificar</a></td>";
+
+//echo "<td><a id=\"btnCertificar\" href=\"certificado.php?id={$registro['id_conductor']}\" target=\"_blank\">Certificar</a></td>";
+
+
+echo "<td><a id=\"btnCertificar\" data-id=\"{$registro['id_conductor']}\" href=\"#\">Certificar</a></td>";
+      }
 
         echo "</table>";
     } else {
         echo "<p>No hay registros para mostrar</p>";
     }
-?>
+    ?>
+    
+
+ <script>
+    // Bloque de script JavaScript
+    var certificarButtons = document.querySelectorAll("#btnCertificar");
+    certificarButtons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            var idConductor = button.getAttribute("data-id");
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "generaqr.php?id_conductor=" + idConductor, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    // Ejecución exitosa de "generaqr.php", ahora redireccionamos a "certificado.php" con el parámetro "id"
+                    window.open("certificado.php?id_conductor=" + idConductor, "_blank");
+                }
+            };
+            xhr.send();
+        });
+    });
+</script>
+
 </body>
 </html>
-

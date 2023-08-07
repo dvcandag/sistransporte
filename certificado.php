@@ -1,8 +1,10 @@
 <?php
 // Verificar si se recibió el parámetro 'id' en la URL
-if (isset($_GET['id'])) {
+
+
+ if (isset($_GET['id_conductor'])) {
     // Obtener el ID del conductor desde la URL
-    $idConductor = $_GET['id'];
+    $idConductor = $_GET['id_conductor'];
 
     // Realizar la conexión a la base de datos
     require_once "config/connection.php";

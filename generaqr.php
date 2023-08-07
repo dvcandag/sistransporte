@@ -1,4 +1,5 @@
 <?php
+
 // Realiza la conexión a la base de datos
 require_once "config/connection.php";
 
@@ -44,23 +45,27 @@ function generarQR($conexion, $datos, $filename)
     }
 }
 
-// Consulta para obtener los datos de conductores y vehículos
-$consulta = "SELECT c.*, v.nro_placa, v.marca, v.modelo, f.fecha_registro
-             FROM conductor c
-             INNER JOIN vehiculo v ON c.id_conductor = v.id_conductor
-             INNER JOIN fecha_registro f ON c.id_conductor = f.id_conductor
-             ORDER BY c.id_conductor DESC";
-$sentencia = $conexion->prepare($consulta);
-$sentencia->execute();
-$registros = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+if (isset($_GET['id_conductor'])) {
+    // Obtener el ID del conductor seleccionado desde el parámetro GET
+    $idConductorSeleccionado = $_GET['id_conductor'];
 
-// Generar y guardar el código QR para cada conductor
-if (!empty($registros)) {
-    foreach ($registros as $registro) {
+    // Consulta para obtener los datos del conductor seleccionado y su vehículo
+    $consulta = "SELECT c.*, v.nro_placa, v.marca, v.modelo, f.fecha_registro
+                 FROM conductor c
+                 INNER JOIN vehiculo v ON c.id_conductor = v.id_conductor
+                 INNER JOIN fecha_registro f ON c.id_conductor = f.id_conductor
+                 WHERE c.id_conductor = :idConductor
+                 ORDER BY c.id_conductor DESC";
+
+    $sentencia = $conexion->prepare($consulta);
+    $sentencia->execute(['idConductor' => $idConductorSeleccionado]);
+    $registro = $sentencia->fetch(PDO::FETCH_ASSOC);
+
+    if ($registro) {
         // Generar el nombre del archivo QR con el formato "dni.png"
         $nombreArchivoQR = $registro['dni'] . ".png";
 
-        // Generar y guardar el código QR con los datos del conductor
+        // Generar y guardar el código QR con los datos del conductor seleccionado
         generarQR($conexion, $registro, $nombreArchivoQR);
 
         // Calcular la fecha de caducidad para mostrarla
@@ -69,10 +74,10 @@ if (!empty($registros)) {
         // Mostrar el contenido del código QR para verificar su contenido (opcional)
         echo "Código QR para DNI: {$registro['dni']} <br>";
         echo nl2br($registro['dni'] . "\n" . $registro['nombre'] . "\n" . $registro['celular'] . "\n" . $registro['nro_placa'] . "\n" . $registro['marca'] . "\n" . $registro['modelo'] . "\n" . "Caducidad: {$fechaCaducidad}" . "\n\n");
+    } else {
+        echo "No se encontró ningún conductor con el ID proporcionado.";
     }
-
-    echo "Se han generado y guardado los códigos QR exitosamente.";
 } else {
-    echo "No hay registros para generar códigos QR.";
+    echo "No se ha seleccionado ningún conductor.";
 }
 ?>
