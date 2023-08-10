@@ -7,6 +7,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos/styles.css">
     <title>Editar Registro de Conductor</title>
+
+<script>
+    //Se valida para que solo se ingrese números
+    function filtrarNumero(input) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+    function limitarLongitud(input, maxLength) {
+        if (input.value.length > maxLength) {
+            input.value = input.value.slice(0, maxLength);
+        }
+    }
+// Se valida para que solo se ingrese números con 1er caracter 9
+    function validarInicio(input) {
+        if (input.value.length === 1 && input.value !== '9') {
+            input.value = '';
+        }
+    }
+    
+    function agregarSeparacion(input) {
+        var formattedValue = input.value.replace(/\D/g, ''); // Eliminar no-numéricos
+        var chunks = [];
+        for (var i = 0; i < formattedValue.length; i += 3) {
+            chunks.push(formattedValue.slice(i, i + 3));
+        }
+        input.value = chunks.join(' ');
+    }
+</script>
+
+
 </head>
 <body>
     <h1>Editar Registro de Conductor</h1>
@@ -138,7 +167,7 @@
         echo "<legend>DATOS DEL CONDUCTOR</legend>";
         echo "<div>";
         echo "<label for=\"dni\">DNI:</label>";
-        echo "<input type=\"text\" id=\"dni\" name=\"dni\" value=\"{$registro_conductor['dni']}\" required>";
+        echo "<input type=\"text\" id=\"dni\" name=\"dni\" value=\"{$registro_conductor['dni']}\" required oninput=\"filtrarNumero(this); limitarLongitud(this, 8);\">";
         echo "</div>";
 
         echo "<div>";
@@ -158,7 +187,7 @@
 
         echo "<div>";
         echo "<label for=\"celular\">Celular:</label>";
-        echo "<input type=\"text\" id=\"celular\" name=\"celular\" value=\"{$registro_conductor['celular']}\" required>";
+        echo "<input type=\"text\" id=\"celular\" name=\"celular\" value=\"{$registro_conductor['celular']}\" required oninput=\"filtrarNumero(this); limitarLongitud(this, 9); agregarSeparacion(this); validarInicio(this);\">";
         echo "</div>";
         echo "</fieldset>";
 

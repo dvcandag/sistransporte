@@ -3,6 +3,7 @@
 // Realiza la conexión a la base de datos
 require_once "config/connection.php";
 
+
 // Incluir la librería PHPQRCode
 require_once "libreria_qr/PHPQRCode/qrlib.php";
 
@@ -69,7 +70,7 @@ if (isset($_GET['id_conductor'])) {
         generarQR($conexion, $registro, $nombreArchivoQR);
 
         // Calcular la fecha de caducidad para mostrarla
-        $fechaCaducidad = date('d/m/Y', strtotime('+2 years', strtotime($registro['fecha_registro'])));
+        $fechaCaducidad = date('Y-m-d', strtotime('+2 years', strtotime($registro['fecha_registro'])));
 
         // Mostrar el contenido del código QR para verificar su contenido (opcional)
         echo "Código QR para DNI: {$registro['dni']} <br>";

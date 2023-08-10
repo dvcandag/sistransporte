@@ -10,10 +10,10 @@ $dbname="sistransporte";
 
 //establece el modo de error de PDO en "PDO::ERRMODE_EXCEPTION" que PDO arrojará una advertencia o un error
    $conexion->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-   echo "Conexión establecida exitosamente.";
+   //echo "Conexión establecida exitosamente.";
 
 //se captura cualquier excepción que pueda haber ocurrido durante la conexión 
    }catch(PDOException $error){
-   echo "Error con la conexión a DB".$error->getMessage();
+   //echo "Error con la conexión a DB".$error->getMessage();
    }
 ?>

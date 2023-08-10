@@ -1,7 +1,6 @@
 <?php
+
 // Verificar si se recibió el parámetro 'id' en la URL
-
-
  if (isset($_GET['id_conductor'])) {
     // Obtener el ID del conductor desde la URL
     $idConductor = $_GET['id_conductor'];

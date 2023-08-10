@@ -5,17 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos/styles.css">
     <title>Conductores-Vehículos</title>
+
+
+<script>
+    //Se valida para que solo se ingrese números
+    function filtrarNumero(input) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+    function limitarLongitud(input, maxLength) {
+        if (input.value.length > maxLength) {
+            input.value = input.value.slice(0, maxLength);
+        }
+    }
+// Se valida para que solo se ingrese números con 1er caracter 9
+    function validarInicio(input) {
+        if (input.value.length === 1 && input.value !== '9') {
+            input.value = '';
+        }
+    }
+    
+    function agregarSeparacion(input) {
+        var formattedValue = input.value.replace(/\D/g, ''); // Eliminar no-numéricos
+        var chunks = [];
+        for (var i = 0; i < formattedValue.length; i += 3) {
+            chunks.push(formattedValue.slice(i, i + 3));
+        }
+        input.value = chunks.join(' ');
+    }
+</script>
+
+
 </head>
 <body>
     <h1>Registro de Conductores y Vehículos</h1>
-    <form action="i-registro.php" method="POST">
+    <form action="i-registro.php" method="POST" onsubmit="return validarFormulario()">
         <fieldset>
             <legend>DATOS DEL CONDUCTOR</legend>
+            
+         
             <div>
                 <label for="dni">DNI:</label>
-                <input type="text" id="dni" name="dni" required>
+                <input type="text" id="dni" name="dni" required oninput="filtrarNumero(this); limitarLongitud(this, 8);">
             </div>
-
+        
             <div>
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
@@ -32,9 +64,9 @@
             </div>
 
             <div>
-                <label for="celular">Celular:</label>
-                <input type="text" id="celular" name="celular" required>
-            </div>
+            <label for="celular">Celular:</label>
+            <input type="text" id="celular" name="celular" required oninput="filtrarNumero(this); limitarLongitud(this, 9); agregarSeparacion(this); validarInicio(this);">
+        </div>
         </fieldset>
 
         <fieldset>
@@ -67,13 +99,20 @@
 
         <fieldset>
             <legend>FECHA DE SOLICITUD</legend>
+
             <div>
                 <label for="fecha_registro">Fecha de Registro:</label>
-                <input type="date" id="fecha_registro" name="fecha_registro" required>
+                <input type="date" id="fecha_registro" name="fecha_registro" required value="<?php echo date('Y-m-d'); ?>">
             </div>
+
+
+
+
         </fieldset>
 
         <button type="submit">Registrar</button>
     </form>
+
+    
 </body>
 </html>
